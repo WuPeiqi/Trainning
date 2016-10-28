@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+def generate_comment_html(sub_comment_dic,margin_left_val):
+    html = ""
+    for k, v_dic in sub_comment_dic.items():
+        html += "<div style='margin-left:%spx' class='comment-node'>" % margin_left_val + k[1] + "</div>"
+        if v_dic:
+            html += generate_comment_html(v_dic, margin_left_val+15)
+    return html
+
+
+def tree(self, comment_dic):
+    html = "<div class='comment-box'>"
+    margin_left = 0
+    for k,v in comment_dic.items():
+        html += "<div class='comment-node'>" + k[1] + "</div>"
+        html += generate_comment_html(v,margin_left+15)
+
+    html += "</div>"
+    return html

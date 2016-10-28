@@ -1,0 +1,777 @@
+{% extends "../master/_layout.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="/statics/plugins/tab-menu-box/tab.css" />
+{% end %}
+
+{% block body %}
+    <div style="background-color: #eee;">
+        <div class="w body-content">
+            <div class="clearfix">
+
+                <div class="content-l" >
+                    <div class="nav-top-area">
+                        <div class="child-nav">
+                            <a href="/r/pic/hot/1" hidefocus="false" class="icons active hotbtn" id="hotts-nav-btn">最热</a>
+                            <a href="/r/pic/new/1" hidefocus="false" class="newbtn" id="newest-nav-btn">最新</a>
+                        </div>
+
+                        {% if handler.session['is_login'] %}
+                            <a href="javascript:void(0);" class="publish-btn" id="publishBtn">
+                                <span class="ico n1"></span><span class="n2">发布</span>
+                            </a>
+                        {% else %}
+                            <a href="javascript:void(0);" class="publish-btn" id="publishBtn">
+                                <span class="ico n1"></span><span class="n2">发布</span>
+                            </a>
+                        {% end %}
+                    </div>
+
+                    <div class="content-list" id="content_list">
+                        {% for item in news_list %}
+
+                            <div class="item">
+
+                                <div class="news-pic">
+                                    <img src="" alt="抽屉新热榜" style="display: inline;">
+                                </div>
+
+                                <div class="null-item"></div>
+
+                                <div class="news-content">
+                                    <div class="part1">
+                                        <a href="{{item[2]}}" class="show-content" target="_blank">{{item[1]}}</a>
+                                        <span class="content-source">-wallstreetcn.com</span>
+                                        <a href="/r/news/hot/1" class="n2">
+                                            <span class="content-kind">{{item[6]}}</span>
+                                        </a>
+                                    </div>
+                                    <div class="area-summary">
+                                        <span class="summary">{{item[3]}}</span>
+                                    </div>
+                                    <div class="part2">
+                                        <a href="javascript:void(0);" class="digg-a" title="推荐" onclick="DoFavor(this,{{item[0]}});">
+                                            {% if item[9] %}
+                                                <span class="hand-icon icon-digg active"></span>
+                                            {% else %}
+                                                <span class="hand-icon icon-digg"></span>
+                                            {% end %}
+                                            <b id="favor_count_{{item[0]}}">{{item[7]}}</b>
+                                        </a>
+                                        <a href="javascript:void(0);" class="discus-a" onclick="ToggleCommentArea({{item[0]}});">
+                                            <span class="hand-icon icon-discus"></span>
+                                            <b id="comment_count_{{item[0]}}">{{item[8]}}</b>
+                                        </a>
+                                        <a href="javascript:void(0);" class="collect-a" >
+                                            <span class="hand-icon icon-collect"></span><b>私藏</b>
+                                        </a>
+                                        <a href="#" class="user-a">
+                                            <span><img src=""></span>
+                                            <b>{{item[5]}}</b>
+                                        </a>
+                                        <span class="time-into">
+                                            <a class="time-a" href="#" target="_blank">
+                                                <b>{{item[4].strftime("%Y-%m-%d %H:%M:%S")}}</b>
+                                            </a>
+                                            <i>入热榜</i>
+                                        </span>
+
+                                    </div>
+                                    <!-- 评论区域 -->
+                                    <div id="comment_area_{{item[0]}}" class="comment-box-area hide" >
+                                        <div class="pinglun arrow" id="comt-arrow-8118680"></div>
+                                        <a class="pinglun close-comt" title="关闭" href="javascript:void(0);" onclick="HideCommentArea({{item[0]}});"></a>
+
+                                        <div class="corner comment-box clearfix" >
+
+                                            <div class="loading-ico loading-ico-top"  style="margin-left:230px;">加载中，请稍候...</div>
+
+                                            <div class="comment-box-top hide" >
+                                                <div class="tip-1">最热评论(<span>{{item[8]}}</span>)</div>
+                                                <div class="tip-2">
+                                                    <a href="#" target="_blank">
+                                                        <em class="pinglun em1"></em>
+                                                        <span>去评论页面</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <ul id="comment_list_{{item[0]}}" class="filetree comment-list-top-2 treeview hide">
+
+                                            </ul>
+
+                                            <div class="huifu-top-box hide">
+                                                <div class="box-l txt-input-area-div-top corner no-corner-bottom">
+                                                    <div class="lab-comment-top">回复  <span id="reply_id_{{item[0]}}"></span>:</div>
+                                                    <!-- 针对谣言文本输入框无效 -->
+                                                        <textarea id="comment_content_{{item[0]}}" maxlength="150" name="txt-huifu-top" class="txt-huifu txt-huifu-top"></textarea>
+                                                </div>
+                                                <div class="box-r">
+                                                    <a href="javascript:void(0);" class="pub-icons add-pub-btn add-pub-btn-unvalid" onclick="DoComment({{item[0]}})">评论</a>
+                                                    <a href="javascript:void(0);" class="loading-ico loading-ico-top pub-loading-top hide">发布中...</a>
+                                                </div>
+                                            </div>
+                                            <div class="tip-3 ">
+                                                <a href="javascript:void(0);" class="hiddenCom-Btn" onclick="HideCommentArea({{item[0]}});">
+                                                    <em class="pinglun em2"></em>
+                                                    <span>收起</span>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        {% end %}
+                    </div>
+
+                    <div class="pagination">
+                        {% raw str_page%}
+                    </div>
+                </div>
+
+
+                <div class="content-r">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shadow hide"></div>
+
+    <div id="publishDialog" class="dialog hide">
+        <div class="dialog-title-bar">
+            <div class="dialog-title">
+                <span>分享新发现</span>
+            </div>
+            <div class="dialog-close" onclick="CloseDialog('#publishDialog');">X</div>
+        </div>
+        <div class="dialog-content">
+            <div class="tab-menu-box">
+                <div class="menu">
+                    <ul id="tab-menu-title">
+                        <li content-to="1" class="current">链接</li>
+                        <li content-to="2" >文字</li>
+                        <li content-to="3" >图片</li>
+                    </ul>
+                </div>
+
+                <div id="tab-menu-body" class="content">
+                    <div content="1" class="publish-content clearfix">
+                        <div class="tab-alt">添加链接</div>
+                        <div class="f1 clearfix">
+                            <div class="left"><input type="text"  name="url" /></div>
+                            <div class="right"><a href="javascript:void(0);">获取标题</a></div>
+                        </div>
+                        <div class="tab-alt">标题</div>
+                        <div class="f2">
+
+                            <input type="text" name="title" />
+                        </div>
+                        <div class="tab-alt">添加摘要（选填）</div>
+                        <div class="f2">
+                            <textarea name="content"></textarea>
+                        </div>
+                        <div class="f3">
+                            <span>发布到：</span>
+                            <div class="news-type" style="display: inline-block">
+                                <a value="1" class="active">42区</a>
+                                <a value="2" >段子</a>
+                                <a value="3" >图片</a>
+                                <a value="4" >挨踢1024</a>
+                                <a value="5" >你问我答</a>
+                            </div>
+                        </div>
+                        <div class="f4">
+                            <a class="submit right" id="submit_link">提交</a>
+                            <span class="error-msg right"></span>
+                        </div>
+                    </div>
+                    <div content="2" class="publish-content clearfix hide">
+                        <div class="f2">
+                            <textarea name="title"></textarea>
+                        </div>
+                        <div class="f3">
+
+                            <span>发布到：</span>
+                            <div class="news-type" style="display: inline-block">
+                                <a value="2" class="active">段子</a>
+                                <a value="5">你问我答</a>
+                            </div>
+                        </div>
+                        <div class="f4">
+                            <a class="submit right" id="submit_text">提交</a>
+                            <span class="error-msg right"></span>
+                        </div>
+                    </div>
+                    <div content="3" class="publish-content clearfix hide">
+                        <div class="tab-alt">添加图片</div>
+                        <div class="f5">
+                            <form style="display: inline-block" id="upload_img_form" name="form" action="/upload_image" method="POST"  enctype="multipart/form-data" >
+                                <a id="fakeFile" class="fake-file">
+                                    <span>上传图片</span>
+                                    <input type="file" name="img" onchange="UploadImage(this);"/>
+                                    <input type="text" name="url" class="hide" />
+                                </a>
+                                <iframe id='upload_img_iframe' name='upload_img_iframe' src=""  class="hide"></iframe>
+                            </form>
+                            <a href="javascript:void(0);" class="re-upload hide" id="reUploadImage" onclick="ReUploadImage(this);">重新上传</a>
+                        </div>
+                        <div class="f2" style="margin-top: 8px">
+                            <textarea name="title" placeholder="请输入描述"></textarea>
+                        </div>
+                        <div class="f3">
+                            <span>发布到：</span>
+                            <div class="news-type" style="display: inline-block">
+                                <a value="3" class="active">图片</a>
+                                <a value="5">你问我答</a>
+                            </div>
+                        </div>
+                        <div class="f4">
+                            <a class="submit right" id="submit_img">提交</a>
+                            <span class="error-msg right"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="accountDialog" class="account-dialog hide clearfix">
+        <div id="model_login" class="login left">
+            <div class="header">登陆</div>
+            <div class="content">
+                <div style="padding: 0 70px">
+                    <div class="tips">
+                        <span>用户名登陆</span>
+                        <span style="padding: 0 5px;">|</span>
+                        <span>邮箱登陆</span>
+                    </div>
+                    <div id="login_error_summary" class="error-msg">
+
+                    </div>
+                    <div class="inp">
+                        <input name="user" type="text" placeholder="请输入用户名或邮箱" />
+                    </div>
+                    <div class="inp">
+                        <input name="pwd" type="password" placeholder="请输入密码" />
+                    </div>
+                    <div class="inp clearfix">
+                        <input name="code" class="check-code" type="text" placeholder="请输入验证码" />
+                        <span>
+                            <img class="check-img" src="/check_code" alt="验证码" onclick="ChangeCode(this);">
+                        </span>
+
+                    </div>
+                    <div class="extra">
+                        <input type="checkbox" name="autoLogin" checked="checked" /> <span>一个月内自动登录</span>
+                        <a class="right" href="javascript:void(0);">忘记密码？</a>
+                    </div>
+                    <div class="inp">
+                        <div class="submit" onclick="SubmitLogin(this);">
+                            <span>登陆</span>
+                            <span class="hide">
+                                <img src="/statics/images/loader.gif" style="height: 16px;width: 16px">
+                                <span>正在登陆</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function ChangeCode(ths) {
+                        ths.src += '?';
+                    }
+                </script>
+            </div>
+        </div>
+        <div id="model_register" class="register left">
+            <div class="header">
+                <span>注册</span>
+                <div class="dialog-close" onclick="CloseDialog('#accountDialog');">X</div>
+            </div>
+            <div class="content">
+                <div style="padding: 0 70px">
+                    <div class="tips">
+                        <span>输入注册信息</span>
+                    </div>
+                    <div id="register_error_summary" class="error-msg">
+
+                    </div>
+                    <div class="inp">
+                        <input name="username" type="text" placeholder="请输入用户名" />
+
+                    </div>
+                    <div class="inp">
+                        <input name="email" id="email" type="text" placeholder="请输入邮箱" />
+                    </div>
+                    <div class="inp">
+                        <input name="email_code" class="email-code" type="text" placeholder="请输入邮箱验证码" />
+                        <a id="fetch_code" class="fetch-code" href="javascript:void(0);">获取验证码</a>
+                    </div>
+                    <div class="inp">
+                        <input name="password" type="password" placeholder="请输入密码" />
+                    </div>
+                    <div class="inp">
+                        <div class="submit" onclick="SubmitRegister(this);">
+                            <span>注册</span>
+                            <span class="hide">
+                                <img src="/statics/images/loader.gif" style="height: 16px;width: 16px">
+                                <span>正在注册</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% end %}
+
+{% block javascript %}
+    <script type="text/javascript" src="/statics/plugins/tab-menu-box/tab.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            BindTabMenu('#tab-menu-title', '#tab-menu-body');
+
+            BindLoginRegisterDialog();
+
+            BindPublishDialog();
+
+            BindSendMsg();
+
+            BindNewType();
+
+            BindPublishSubmit();
+        });
+
+        function BindPublishSubmit(){
+            $('#submit_link,#submit_text,#submit_img').click(function(){
+                // 获取输入内容并提交
+                var container = $(this).parent().parent();
+                var post_dict = {};
+                container.find('input[type="text"],textarea').each(function(){
+                    post_dict[$(this).attr('name')] =$(this).val();
+                });
+                post_dict['news_type_id'] = container.find('.news-type .active').attr('value');
+
+                $.ajax({
+                    url: '/index',
+                    type: 'POST',
+                    data: post_dict,
+                    dataType: 'json',
+                    success: function (arg) {
+                        if(arg.status){
+                            window.location.href = '/index';
+                        }else{
+                            console.log(arg);
+                        }
+                    }
+                    
+                })
+
+
+            });
+        }
+
+        function BindNewType(){
+            $('.news-type').children().click(function(){
+                $(this).addClass('active').siblings().removeClass('active');
+            });
+        }
+
+        function BindSendMsg(){
+            $("#fetch_code").click(function(){
+                $('#register_error_summary').empty();
+                var email = $('#email').val();
+                if(email.trim().length == 0){
+                    $('#register_error_summary').text('请输入注册邮箱');
+                    return;
+                }
+                if($(this).hasClass('sending')){
+                    return;
+                }
+                var ths = $(this);
+                var time = 60;
+
+                $.ajax({
+                    url: "/send_msg",
+                    type: 'POST',
+                    data: {email: email},
+                    dataType: 'json',
+                    success: function(arg){
+                        if(!arg.status){
+                            $('#register_error_summary').text(arg.summary);
+                        }else{
+                            ths.addClass('sending');
+                            var interval = setInterval(function(){
+                            ths.text("已发送(" + time + ")");
+                            time -= 1;
+                            if(time <= 0){
+                                clearInterval(interval);
+                                ths.removeClass('sending');
+                                ths.text("获取验证码");
+                            }
+                        }, 1000);
+                        }
+                    }
+                });
+
+            });
+        }
+
+        function BindLoginRegisterDialog(){
+
+            $('#reg_link_a,#login_link_a').click(function(){
+                $('#accountDialog').removeClass('hide');
+                $('.shadow').removeClass('hide');
+            });
+        }
+
+        function BindPublishDialog(){
+
+            $('#publishBtn').click(function(){
+                if($('#action_nav').attr('is-login') == 'true'){
+                    $('#publishDialog').removeClass('hide');
+                }else{
+                    $('#accountDialog').removeClass('hide');
+                }
+
+                $('.shadow').removeClass('hide');
+            });
+
+        }
+
+        function CloseDialog(dialog){
+            $(dialog).addClass('hide');
+            $('.shadow').addClass('hide');
+        }
+
+        window.onkeydown = function(event){
+            if(event && event.keyCode == 27){
+                $('.dialog,.account-dialog,.shadow').addClass('hide');
+            }
+        };
+
+        /*
+        上传图片
+        */
+        function UploadImage(ths){
+            document.getElementById('upload_img_iframe').onload = UploadImageComplete;
+            document.getElementById('upload_img_form').target = 'upload_img_iframe';
+            document.getElementById('upload_img_form').submit();
+        }
+
+        /*
+        上传图片之后回掉函数
+        */
+        function UploadImageComplete(){
+            var origin = $("#upload_img_iframe").contents().find("body").text();
+            var obj = JSON.parse(origin);
+            if(obj.status){
+                var img = document.createElement('img');
+                img.src = obj.data;
+                img.style.width = "200px";
+                img.style.height = "180px";
+                $("#upload_img_form").append(img);
+                $('#fakeFile').addClass('hide');
+                $('#reUploadImage').removeClass('hide');
+                $('#fakeFile').find('input[type="text"]').val(obj.data);
+            }else{
+                alert(obj.summary);
+            }
+        }
+
+        /*
+        重新上传图片
+        */
+        function ReUploadImage(ths){
+            $(ths).addClass('hide');
+            $("#upload_img_form").find('img').remove();
+            $('#fakeFile').removeClass('hide');
+        }
+
+        /*
+        点击登陆按钮
+        */
+        function SubmitLogin(ths){
+            $(ths).children(':eq(0)').addClass('hide');
+            $(ths).addClass('not-allow').children(':eq(1)').removeClass('hide');
+            // 发送Ajax请求
+            //完成之后
+            $('#model_login .inp .error').remove();
+
+            var post_dict = {};
+            $('#model_login input').each(function(){
+                post_dict[$(this).attr("name")] = $(this).val();
+            });
+
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: post_dict,
+                dataType: 'json',
+                success: function(arg){
+                    if(arg.status){
+                        window.location.href = '/index';
+                    }else{
+                        $.each(arg.message, function(k,v){
+                            //<span class="error">s</span>
+                            var tag = document.createElement('span');
+                            tag.className = 'error';
+                            tag.innerText = v;
+                            $('#model_login input[name="'+ k +'"]').after(tag);
+                        })
+                    }
+                }
+            });
+
+            $(ths).removeClass('not-allow').children(':eq(1)').addClass('hide');
+            $(ths).children(':eq(0)').removeClass('hide');
+        }
+
+        /*
+        点击注册按钮
+        */
+        function SubmitRegister(ths){
+            $('#register_error_summary').empty();
+            $('#model_register .inp .error').remove();
+
+            $(ths).children(':eq(0)').addClass('hide');
+            $(ths).addClass('not-allow').children(':eq(1)').removeClass('hide');
+
+            var post_dict = {};
+            $('#model_register input').each(function(){
+                post_dict[$(this).attr("name")] = $(this).val();
+            });
+
+            $.ajax({
+                url: '/register',
+                type: 'POST',
+                data: post_dict,
+                dataType: 'json',
+                success: function(arg){
+                    if(arg.status){
+                        window.location.href = '/index';
+                    }else{
+                        $.each(arg.message, function(k,v){
+                            //<span class="error">s</span>
+                            var tag = document.createElement('span');
+                            tag.className = 'error';
+                            tag.innerText = v;
+                            $('#model_register input[name="'+ k +'"]').after(tag);
+                        })
+                    }
+                }
+            });
+
+            $(ths).removeClass('not-allow').children(':eq(1)').addClass('hide');
+            $(ths).children(':eq(0)').removeClass('hide');
+        }
+
+        /*
+        显示或隐藏评论区
+         */
+        function ToggleCommentArea(nid){
+            var $comment_area = $("#comment_area_" + nid);
+            if($comment_area.hasClass('hide')){
+                $comment_area.removeClass('hide');
+                var $comment_list = $("#comment_list_" + nid);
+                $.ajax({
+                    url: '/comment',
+                    type: 'GET',
+                    data: {nid: nid},
+                    success: function(arg){
+                        $comment_list.empty();
+                        $comment_list.append(arg);
+                        var $loading = $comment_area.find('.comment-box').children().first();
+                        $loading.addClass('hide');
+                        $loading.siblings().removeClass('hide');
+                    }
+                })
+            }else{
+                $comment_area.addClass('hide');
+            }
+        }
+
+        /*
+        隐藏评论区
+         */
+        function HideCommentArea(nid){
+            $("#comment_area_" + nid).addClass('hide');
+        }
+
+        /*
+        发布评论
+         */
+        function DoComment(nid){
+            var content = $("#comment_content_"+nid).val();
+            var reply_id = $("#reply_id_"+nid).attr('target');
+
+            if($('#action_nav').attr('is-login') == 'true'){
+                $.ajax({
+                    url: '/comment',
+                    type: 'POST',
+                    data: {content: content, reply_id:reply_id, news_id: nid},
+                    dataType: 'json',
+                    success: function(arg){
+                        // 获取评论信息，将内容添加到指定位置
+                        console.log(arg);
+                        if(arg.status){
+                            $('#comment_content_' + arg.data.news_id).val('');
+                            var a = '<ul><li class="items" style="padding:8px 0 0 16px;"><span class="folder" id="comment_folder_';
+                            var b = arg.data.nid;
+                            var c = '"><div class="comment-L comment-L-top"><a href="#" class="icons zhan-ico"></a><a href="/user/moyujian/submitted/1"><img src="/statics/images/1.jpg"></a></div><div class="comment-R comment-R-top" style="background-color: rgb(246, 246, 246);"><div class="pp"><a class="name" href="/user/moyujian/submitted/1">';
+                            var d = arg.data.username;
+                            var e = '</a><span class="p3">';
+                            var f = arg.data.content;
+                            var g= '</span><span class="into-time into-time-top">';
+                            var h = arg.data.ctime;
+                            var i = '</span></div><div class="comment-line-top"><div class="comment-state"><a class="ding" href="javascript:void(0);"><b>顶</b><span class="ding-num">[0]</span></a><a class="cai" href="javascript:void(0);"><b>踩</b><span class="cai-num">[0]</span></a><span class="line-huifu">|</span> <a class="see-a jubao" href="javascript:void(0);">举报</a> <span class="line-huifu">|</span> <a class="see-a huifu-a" href="javascript:void(0);" onclick="';
+                            var j = "reply(" + arg.data.news_id + "," +arg.data.nid+",'"+arg.data.username+"')";
+                            var k = '">回复</a></div></div></div></span></li></ul>';
+                            var tag = a+b+c+d+e+f+g+h+i+j+k;
+                            console.log(arg,tag);
+                            if(arg.data.reply_id){
+                                $comment_folder = $('#comment_folder_' + arg.data.reply_id);
+                                $comment_folder.after(tag);
+                            }else{
+                                $('#comment_list_'+arg.data.news_id).append(tag);
+                            }
+
+
+                        }else{
+                            alert('error');
+                        }
+                    }
+                })
+            }else{
+                $('#accountDialog').removeClass('hide');
+                $('.shadow').removeClass('hide');
+            }
+        }
+
+        /*
+        点赞
+         */
+        function DoFavor(ths, nid) {
+
+            if($('#action_nav').attr('is-login') == 'true'){
+                $.ajax({
+                    url: '/favor',
+                    type: 'POST',
+                    data: {news_id: nid},
+                    dataType: 'json',
+                    success: function(arg){
+                        if(arg.status){
+                            var $favorCount = $('#favor_count_'+nid);
+                            var c = parseInt($favorCount.text());
+                            if(arg.code == 2301){
+                                $favorCount.text(c + 1);
+                                $(ths).find('span').addClass('active');
+                                AddFavorAnimation(ths);
+                            }else if(arg.code == 2302){
+                                $favorCount.text(c - 1);
+                                $(ths).find('span').removeClass('active');
+                                MinusFavorAnimation(ths);
+                            }else{
+
+                            }
+
+                        }else{
+
+                        }
+                    }
+                })
+            }else{
+                $('#accountDialog').removeClass('hide');
+                $('.shadow').removeClass('hide');
+            }
+        }
+
+        /*
+        点赞+1效果
+         */
+        function AddFavorAnimation(ths){
+            var offsetTop = -10;
+            var offsetLeft = 20;
+            var fontSize = 24;
+            var opacity = 1;
+            var tag = document.createElement('i');
+            tag.innerText = "+1";
+            tag.style.position = 'absolute';
+            tag.style.top = offsetTop + 'px';
+            tag.style.left = offsetLeft + 'px';
+            tag.style.fontSize = fontSize + "px";
+            tag.style.color = "#5cb85c";
+            $(ths).append(tag);
+
+            var addInterval = setInterval(function(){
+                    fontSize += 5;
+                    offsetTop -= 15;
+                    offsetLeft += 5;
+                    opacity -= 0.1;
+                    tag.style.top = offsetTop+ 'px';
+                    tag.style.left = offsetLeft+ 'px';
+                    tag.style.fontSize = fontSize + 'px';
+                    tag.style.opacity = opacity;
+                if(opacity <= 0.5){
+                    tag.remove();
+                    clearInterval(addInterval);
+                }
+            },40)
+        }
+
+        /*
+        点赞-1效果
+         */
+        function MinusFavorAnimation(ths){
+            var offsetTop = -10;
+            var offsetLeft = 20;
+            var fontSize = 24;
+            var opacity = 1;
+            var tag = document.createElement('i');
+            tag.innerText = "-1";
+            tag.style.position = 'absolute';
+            tag.style.top = offsetTop + 'px';
+            tag.style.left = offsetLeft + 'px';
+            tag.style.fontSize = fontSize + "px";
+            tag.style.color = "#787878";
+            $(ths).append(tag);
+
+            var addInterval = setInterval(function(){
+                    fontSize += 5;
+                    offsetTop -= 15;
+                    offsetLeft += 5 ;
+                    opacity -= 0.1;
+                    tag.style.top = offsetTop+ 'px';
+                    tag.style.left = offsetLeft+ 'px';
+                    tag.style.fontSize = fontSize + 'px';
+                    tag.style.opacity = opacity;
+                if(opacity <= 0.5){
+                    tag.remove();
+                    clearInterval(addInterval);
+                }
+            },40)
+        }
+
+        /**
+         * 回复评论
+         * @param news_id
+         * @param comment_id
+         * @param username
+         */
+        function reply(news_id, comment_id, username){
+            var $reply = $('#reply_id_' + news_id);
+            $reply.attr('target', comment_id);
+            $reply.text(username);
+            $reply.parent().css('display','block');
+        }
+    </script>
+{% end %}

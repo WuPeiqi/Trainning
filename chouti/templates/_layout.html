@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>抽屉新热榜</title>
+    <link rel="stylesheet" href="/statics/css/commons.css" />
+    {% block css %} {% endblock %}
+</head>
+<body>
+    <div class="pg-header">
+        <div class="w">
+            <a class="logo" href="/"></a>
+            <div class="act-menu">
+                <a href="/all/hot/recent/1" class="tb active">全部</a>
+                <a href="/all/hot/recent/1" class="tb">42区</a>
+                <a href="/all/hot/recent/1" class="tb">段子</a>
+                <a href="/all/hot/recent/1" class="tb">图片</a>
+                <a href="/all/hot/recent/1" class="tb">挨踢1024</a>
+                <a href="/all/hot/recent/1" class="tb">你问我答</a>
+            </div>
+            <div class="key-sera">
+
+                <form action="/search/show" method="post" name="searchFrm2" id="searchFrm2">
+                    <input type="text" class="search-txt-s" name="words" id="txtSearch2" autocomplete="off">
+
+                    <a href="javascript:;" class="i" name="searchBtn_2" id="searchBtn_3"><span class="ico"></span></a>
+                    <input type="hidden" value="1" id="page" name="page">
+                </form>
+
+		    </div>
+
+            {% if request.session.is_login %}
+                <div id="action_nav" is-login="true" class="action-nav">
+                    <a href="/show/flow/1" style="float:left;position:relative;" id="btnDtaiShw">动态
+                        <b class="notice-num-title" id="Dtai-num-title" style="right: 3px; display: none;">
+                            <em id="Dtai-em"></em>
+                        </b>
+                    </a>
+                    <a href="javascript:;" id="btnNotShw" class="notice-box">通知
+                        <b class="notice-num-title" id="notice-num-title" style="display: none;">
+                            <em id="notice-em"></em>
+                            <i>+</i>
+                        </b>
+                    </a>
+                    <a href="/user/link/saved/1" id="loginUserNc" class="userPro-Box">
+                        <img src="" id="userProImg">
+                        <span class="u-nick" id="userProNick">{{ request.session.user_info.username}}</span>
+                        <em id="userProArr"></em>
+                    </a>
+                </div>
+                <div class="user-opr-box" id="userOprBox" style="left: 869px; display: none;">
+                    <a href="/user/link/saved/1" style="border-top:0;">我的新热榜</a>
+                    <a href="/profile">设置</a>
+                    <a class="logout" href="javascript:;">退出</a>
+                    <a href="http://www.chouti.com/cdu_45792645155" target="_blank" class="ie6-a">我的收藏</a>
+                </div>
+            {% else %}
+                <div id="action_nav" is-login="false" class="action-nav">
+                    <a href="javascript:void(0);" class="login-btn-a" id="reg_link_a">注册</a>
+                    <a href="javascript:void(0);" class="login-btn-a" id="login_link_a">登录</a>
+                </div>
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+    <div class="pg-body">
+
+        {% block body %} {% endblock %}
+
+    </div>
+
+    <div class="pg-footer" style="background-color: #eee;">
+        <div class="w" style="background-color: #ffffff;">
+            <div class="foot-nav">
+                <div style="display:none" id="y-destjid"></div>
+                <div style="display:none" id="y-destnick"></div>
+                <a href="/help/about" target="_blank">关于我们</a><span>|</span><a href="/help/contact" target="_blank">联系我们</a><span>|</span><a href="/help/service" target="_blank">服务条款</a><span>|</span><a href="/help/privacy" target="_blank">隐私政策</a><span>|</span><a href="/help/tool" target="_blank">抽屉新热榜工具</a><span>|</span><!--<a href="http://img.chouti.com/toolsffcj.html" target="_blank">浏览器插件</a><span>|</span>--><a href="/download/model" target="_blank">下载客户端</a><span>|</span><a href="/feedback" target="_blank">意见与反馈</a><span>|</span><a href="/help/goodlink" target="_blank">友情链接</a><span>|</span><a href="http://www.shouye.com/Index.do?method=show&amp;pageId=44251&amp;jid=xinrebang@gozap.com" target="_blank">公告</a><!--<span>|</span><a href="/points/gifts" target="_blank">积分商城</a>-->
+                <a href="#" target="_blank" style="margin-left:0;vertical-align:-2px;" title="Rss订阅，Feed地址：http://dig.chouti.com/feed.xml"><img src="" width="36" height="14"></a>
+            </div>
+            <div class="foot-nav2">
+                <a target="_blank" href="http://www.gozap.com/"><img class="foot_e" src=""></a>
+                <span class="foot_d">旗下站点</span>
+                <span class="foot_a">© 2016 chouti.com</span>
+                <a target="_blank" href="http://www.miibeian.gov.cn/" class="foot_b">京ICP备09053974号-3 京公网安备 110102004562</a>
+                <div style="margin-top:6px;">版权所有：北京格致璞科技有限公司</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/statics/js/jquery-1.12.4.js"></script>
+    {% block javascript %} {% endblock %}
+    <script>
+        $(function(){
+            $('#loginUserNc,#userOprBox').mouseover(function(){
+                $('#userOprBox').css('display', 'block');
+                $('#loginUserNc').addClass('active');
+            }).mouseout(function () {
+                $('#userOprBox').css('display', 'none');
+                $('#loginUserNc').removeClass('active');
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h1>hello</h1>
+    <form action="/index" method="post" enctype="multipart/form-data">
+
+        <p><input name="user" type="text" placeholder="用户名" /></p>
+        <p><input name="pwd" type="password" placeholder="密码" /></p>
+        <p>
+            <input name='code' type="text" placeholder="验证码" />
+            <img src="/check_code" onclick='ChangeCode(this);'>
+        </p>
+        <input type="submit" />
+    </form>
+    <h1>二维码登陆</h1>
+    <img src="/qr_code" onclick='ChangeCode(this);'>
+
+
+    <script src="/static/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript">
+
+        /*
+        设置cookie，指定秒数过期
+         */
+        function setCookie(name,value,expires){
+            var temp = [];
+            var current_date = new Date();
+            current_date.setSeconds(current_date.getSeconds() + 5);
+            document.cookie = name + "= "+ value +";expires=" + current_date.toUTCString();
+        }
+
+	    function ChangeCode(ths) {
+            ths.src += '?';
+        }
+
+        function getCookie(name) {
+            var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+            return r ? r[1] : undefined;
+        }
+
+        function post(url, args, callback) {
+            args._xsrf = getCookie("_xsrf");
+            $.ajax({
+                url: url,
+                data: $.param(args),
+                dataType: "text",
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        post('/index', {'k1': 123})
+    </script>
+</body>
+</html>

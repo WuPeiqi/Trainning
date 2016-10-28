@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>登陆用户：<span>{{user['NickName']}}</span></h1>
+        <img class="hide" src="https://wx.qq.com{{user['HeadImgUrl']}}">
+        <span class="hide">{{user['UserName']}}</span>
+    </div>
+
+    <h2>最近用户</h2>
+    <hr />
+    <div>
+        <ul>
+            {% for item in contact_list%}
+            <li>{{item['NickName']}}</li>
+            {% end %}
+            <li>
+                <a href="/contact_list">更多联系人</a>
+            </li>
+        </ul>
+    </div>
+
+    <h2>公众号</h2>
+    <hr />
+    <div>
+        <ul>
+            {% for ele in MPSubscribeMsgList %}
+            <li>
+                {% for i in ele['MPArticleList']%}
+                <a href='{{ i["Url"] }}'>{{ i['Title'] }}</a>
+                <br/><i style="color: #dddddd;font-size: 8px;">{{ i['Digest'] }}</i>
+                {% end%}
+            </li>
+            {% end %}
+        </ul>
+    </div>
+
+</body>
+</html>

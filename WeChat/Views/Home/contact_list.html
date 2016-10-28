@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .pg-header{
+            height: 48px;
+            background-color: #337ab7;
+            color: white;
+            line-height: 48px;
+        }
+        .container{}
+        .menu{
+            float: left;
+            width: 250px;
+            position: absolute;
+            top:48px;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+            background-color: black;
+            color: white;
+        }
+        .menu .item{
+            padding: 10px 5px;
+        }
+        .menu .item:hover{
+            background-color: #337ab7;
+        }
+        .content{
+            float: left;
+            position: absolute;
+            left: 259px;
+            top: 28px;
+            right: 0;
+            bottom: 0;
+            overflow: auto;
+        }
+        .hide{
+            display: none;
+        }
+        .chat-panel{
+            position: relative;
+        }
+        .chat-panel .title{
+            background-color: black;
+            height: 50px;
+            color: white;
+        }
+        .chat-panel .body{
+            border: 1px solid black;
+            height: 300px;
+        }
+        .chat-panel .footer{
+            height: 200px;
+        }
+
+    </style>
+</head>
+<body style="margin: 0 auto;">
+    <div class="pg-header">
+        <span>登陆用户：{{user['NickName']}}</span>
+        <img class="hide" src="https://wx.qq.com{{user['HeadImgUrl']}}">
+        <span class="hide">{{user['UserName']}}</span>
+    </div>
+
+    <div class="container">
+        <div class="menu">
+            {% for member in user_list_dict['MemberList'] %}
+                <div class="item" user-name="{{member['UserName']}}" nick-name="{{member['NickName']}}">{{member['NickName']}}</div>
+            {% end %}
+        </div>
+        <div class="content">
+            <div class="chat-panel hide">
+                <div class="title"></div>
+                <div class="body"></div>
+                <div class="footer">
+                    <textarea id="message" class="msg"></textarea>
+                    <input class="send" type="button" value="发送"  onclick="SendMsg();"/>
+                    <input class="send" type="button" value="sync"  onclick="GetMsg();"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src={{static_url("js/jquery-1.8.2.min.js")}}></script>
+    <script>
+        $(function(){
+            BindSendEvent();
+            GetMsg();
+        });
+        USERNAME = "";
+        function BindSendEvent(){
+            $(".menu").delegate('.item', "dblclick", function(){
+                nickname = $(this).attr('nick-name');
+                USERNAME = $(this).attr('user-name');
+                $('.chat-panel .title').text(nickname);
+                $('.chat-panel').removeClass('hide');
+            })
+        }
+
+        function GetMsg(){
+             $.ajax({
+                url: "/msg",
+                type: "GET",
+                success: function (arg) {
+                    GetMsg();
+                }
+            })
+        }
+        function SendMsg(){
+            var sendMsg = $('#message').val();
+            $.ajax({
+                url: "/msg",
+                data: {"username": window.USERNAME, "message": sendMsg},
+                type: "POST",
+                success: function (arg) {
+                    $('#message').val("");
+                }
+            })
+        }
+    </script>
+</body>
+</html>
