@@ -623,7 +623,6 @@
                     dataType: 'json',
                     success: function(arg){
                         // 获取评论信息，将内容添加到指定位置
-                        console.log(arg);
                         if(arg.status){
                             $('#comment_content_' + arg.data.news_id).val('');
                             var a = '<ul><li class="items" style="padding:8px 0 0 16px;"><span class="folder" id="comment_folder_';

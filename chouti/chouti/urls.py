@@ -21,15 +21,17 @@ from web.views import account
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^index/$', home.index),
+    url(r'^fetch_comment/$', home.fetch_comment),
     # url(r'^comment/$', home.comment),
     url(r'^favor/$', home.favor),
     url(r'^upload_image/$', home.upload_image),
-    #
     url(r'^check_code/$', account.check_code),
     url(r'^send_msg/$', account.send_msg),
     url(r'^register/$', account.register),
     url(r'^login/$', account.login),
     url(r'^logout/$', account.logout),
-    url(r'^test_request/$', account.test_request),
+
+    url(r'^add_comment/$', home.add_comment),
+    url(r'^show/$', home.show),
     url(r'^', home.index),
 ]

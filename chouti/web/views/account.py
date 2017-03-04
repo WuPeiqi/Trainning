@@ -4,9 +4,9 @@ import io
 import json
 import datetime
 
-from django.shortcuts import HttpResponse,redirect,render
+from django.shortcuts import HttpResponse, redirect, render
 
-from web.forms.account import SendMsgForm,RegisterForm,LoginForm
+from web.forms.account import SendMsgForm, RegisterForm, LoginForm
 from web import models
 
 from backend import commons
@@ -15,6 +15,11 @@ from backend.utils.response import BaseResponse
 
 
 def check_code(request):
+    """
+    获取验证码
+    :param request:
+    :return:
+    """
     stream = io.BytesIO()
     img, code = CheckCode.create_validate_code()
     img.save(stream, "png")
@@ -23,6 +28,11 @@ def check_code(request):
 
 
 def send_msg(request):
+    """
+    注册时，发送邮箱验证码
+    :param request:
+    :return:
+    """
     rep = BaseResponse()
     form = SendMsgForm(request.POST)
     if form.is_valid():
@@ -30,6 +40,7 @@ def send_msg(request):
         email = _value_dict['email']
 
         has_exists_email = models.UserInfo.objects.filter(email=email).count()
+
         if has_exists_email:
             rep.summary = "此邮箱已经被注册"
             return HttpResponse(json.dumps(rep.__dict__))
@@ -53,19 +64,23 @@ def send_msg(request):
                     models.SendMsg.objects.filter(email=email).update(times=0)
 
                 from django.db.models import F
+
                 models.SendMsg.objects.filter(email=email).update(code=code,
                                                                   ctime=current_date,
-                                                                  times=F('times')+1)
+                                                                  times=F('times') + 1)
                 rep.status = True
     else:
-
         error_dict = json.loads(form.errors.as_json())
-
         rep.summary = error_dict['email'][0]['message']
     return HttpResponse(json.dumps(rep.__dict__))
 
 
 def register(request):
+    """
+    注册
+    :param request:
+    :return:
+    """
     rep = BaseResponse()
     form = RegisterForm(request.POST)
     if form.is_valid():
@@ -110,18 +125,22 @@ def register(request):
 
 
 def login(request):
-
+    """
+    用户登陆
+    :param request:
+    :return:
+    """
     rep = BaseResponse()
     form = LoginForm(request.POST)
     if form.is_valid():
         _value_dict = form.clean()
         if _value_dict['code'].lower() != request.session["CheckCode"].lower():
-            rep.message = {'code':[{'message':'验证码错误'}]}
+            rep.message = {'code': [{'message': '验证码错误'}]}
             return HttpResponse(json.dumps(rep.__dict__))
 
         from django.db.models import Q
-        con = Q()
 
+        con = Q()
         q1 = Q()
         q1.connector = 'AND'
         q1.children.append(('email', _value_dict['user']))
@@ -137,7 +156,7 @@ def login(request):
 
         obj = models.UserInfo.objects.filter(con).first()
         if not obj:
-            rep.message = {'user': [{'message':'用户名邮箱或密码错误'}]}
+            rep.message = {'user': [{'message': '用户名邮箱或密码错误'}]}
             return HttpResponse(json.dumps(rep.__dict__))
 
         request.session['is_login'] = True
@@ -145,29 +164,17 @@ def login(request):
         rep.status = True
     else:
         error_msg = form.errors.as_json()
-        print(error_msg)
         rep.message = json.loads(error_msg)
 
     return HttpResponse(json.dumps(rep.__dict__))
 
 
 def logout(request):
-
+    """
+    用户注销
+    :param request:
+    :return:
+    """
     request.session.clear()
     return redirect('/index/')
 
-
-def test_request(request):
-    from django.http.request import QueryDict
-    from django.core.handlers.wsgi import WSGIRequest
-    print(request,type(request))
-    print(request.POST,type(request.POST))
-    v1 = request.POST.getlist('favor_intval')
-
-    v2 = request.POST.get('1')
-    print(v1,v2)
-    v1 = request.GET.getlist('favor_intval')
-
-    v2 = request.GET.get('1')
-    print(v1,v2)
-    return render(request, 'test_request.html')

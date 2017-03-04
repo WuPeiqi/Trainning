@@ -60,7 +60,6 @@ class Comment(models.Model):
     down = models.IntegerField(default=0)
     ctime = models.DateTimeField()
 
-
     device = models.CharField(max_length=16)
     content = models.CharField(max_length=150)
 

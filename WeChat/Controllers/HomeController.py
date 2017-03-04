@@ -105,6 +105,7 @@ class LoginHandler(tornado.web.RequestHandler):
             ticket_result = self.auth_analysis(http_res_ticket)
             TICKET_RESULT_DICT.update(ticket_result)
 
+
             init_args = {
                 "BaseRequest": {
                     "DeviceID": "e531777446530354",

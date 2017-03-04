@@ -1,0 +1,22 @@
+2017-02-21 16:51:28,612  - ERROR :  HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /asset (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x101b6d6a0>: Failed to establish a new connection: [Errno 61] Connection refused',))
+2017-02-22 11:44:44,079  - ERROR :  HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /asset (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x1023504a8>: Failed to establish a new connection: [Errno 61] Connection refused',))
+2017-02-22 17:29:14,336  - ERROR :  ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response',))
+2017-02-22 18:10:43,275  - ERROR :  API授权失败
+2017-02-22 18:11:56,736  - ERROR :  API授权失败
+2017-02-22 18:12:40,274  - ERROR :  API授权失败
+2017-02-22 18:12:48,260  - ERROR :  API授权失败
+2017-02-22 18:13:55,698  - ERROR :  API授权失败
+2017-02-22 18:14:13,697  - ERROR :  API授权失败
+2017-02-22 19:02:36,583  - ERROR :  None
+2017-02-23 09:17:51,995  - ERROR :  资产不存在
+2017-02-23 09:20:58,971  - ERROR :  资产不存在
+2017-02-23 09:40:52,124  - ERROR :  资产更新异常
+2017-02-23 09:41:58,601  - ERROR :  资产更新异常
+2017-02-23 09:49:12,592  - ERROR :  资产更新异常
+2017-02-23 09:50:17,132  - ERROR :  资产更新异常
+2017-02-23 09:52:17,621  - ERROR :  资产更新异常
+2017-02-23 09:55:15,712  - ERROR :  资产更新异常
+2017-02-23 09:56:33,072  - ERROR :  资产更新异常
+2017-02-23 10:00:09,356  - ERROR :  资产更新异常
+2017-02-23 10:01:32,992  - ERROR :  资产更新异常
+2017-02-23 10:02:45,313  - ERROR :  资产更新异常
